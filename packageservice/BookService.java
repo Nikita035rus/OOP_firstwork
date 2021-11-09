@@ -1,15 +1,20 @@
-package Interview.OOP.Packageservice;
+package Interview.oop.packageservice;
 
 
-import Interview.OOP.Entity.Book;
-import Interview.OOP.Exception.IncorrectRequest;
-import Interview.OOP.Repository.Repository;
+import Interview.oop.entity.Book;
+import Interview.oop.exception.IncorrectRequest;
+import Interview.oop.repository.BookRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public class Service {
-    public static Optional<Book> findBookByName(String name) {
+public class BookService {
+    private final BookRepository bookRepository;
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
+    public Optional<Book> findBookByName(String name) {
         //find_book?name=Java8
         if (!name.contains("name=")) {
             throw new IncorrectRequest("IncorrectArgumentsException");
@@ -17,14 +22,14 @@ public class Service {
         String nameBook = name.substring(name.indexOf("=") + 1)
                 .replace('_', ' ');
 
-        return Repository.findBookByName(nameBook);
+        return bookRepository.findBookByName(nameBook);
     }
 
-    public static List<Book> findAllBooks() {
-        return Repository.findAllBooks();
+    public List<Book> findAllBooks() {
+        return bookRepository.findAllBooks();
     }
 
-    public static List<Book> findBookWherePriceBetween(String arguments) {
+    public List<Book> findBookWherePriceBetween(String arguments) {
         //find_books_price_between?from=100&to=200
 
         if (!arguments.contains("from=")
@@ -45,16 +50,16 @@ public class Service {
             to = Integer.parseInt(arrayArguments[1]
                     .substring(arrayArguments[1].indexOf("=") + 1));
             if (from < 0 || to < 0 || from > to) {
-                throw new IncorrectRequest("IncorrectArgumentException");
+                throw new IncorrectRequest("IncorrectIntervalException");
             }
         } catch (NumberFormatException exception) {
-            throw new IncorrectRequest("IncorrectArgumentException");
+            throw new IncorrectRequest("ArgumentIsNonNumericException");
         }
 
-        return Repository.findBookWherePriceBetween(from, to);
+        return bookRepository.findBookWherePriceBetween(from, to);
     }
 
-    public static Book saveBook(String arguments) {
+    public Book saveBook(String arguments) {
         //author=Schildt&name=Programming_on_Java&cost=100
 
         if (!arguments.contains("author=")
@@ -76,10 +81,10 @@ public class Service {
             throw new IncorrectRequest("IncorrectCostException");
         }
         Book book = new Book(author, name, cost);
-        return Repository.saveBook(book);
+        return bookRepository.saveBook(book);
     }
 
-    public static Book updateBookByID(String arguments) {
+    public Book updateBookByID(String arguments) {
     //update_book?id=1&author=Artur&name=Java&price=112
         String [] arrayBooks = arguments
                 .substring(arguments.indexOf("?")+1)
@@ -98,18 +103,18 @@ public class Service {
         }catch (NumberFormatException exception){
             throw new IncorrectRequest("IncorrectIdException");
         }
-        return Repository.updateBookByID(id, new Book(author,name,coast));
+        return bookRepository.updateBookByID(id, new Book(author,name,coast));
     }
 
-    public static void deleteBookByName(String name) {
+    public void deleteBookByName(String name) {
         //delete_book?name=Java
         String nameBook= name.substring(name.indexOf("=")+1)
                 .replace('_', ' ');
-        Repository.deleteBookByName(nameBook);
+        bookRepository.deleteBookByName(nameBook);
     }
 
-    public static void deleteAll() {
+    public void deleteAll() {
         //delete_all
-        Repository.deleteAll();
+        bookRepository.deleteAll();
     }
 }

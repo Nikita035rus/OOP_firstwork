@@ -1,4 +1,4 @@
-package Interview.OOP.Exception;
+package Interview.oop.exception;
 
 public class IncorrectRequest extends RuntimeException {
     public IncorrectRequest(String massage) {

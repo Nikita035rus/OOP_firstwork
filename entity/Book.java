@@ -1,10 +1,8 @@
-package Interview.OOP.Entity;
+package Interview.oop.entity;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
-public class Book implements Comparator<Book> {
+public class Book {
     private static int count;
     private final int id;
     private  String author;
@@ -12,7 +10,6 @@ public class Book implements Comparator<Book> {
 
     private  int price;
 
-    public static Map<String, Book> library = new HashMap<>();
 
     public Book(String author, String name, int price) {
         this.id = ++count;
@@ -64,7 +61,15 @@ public class Book implements Comparator<Book> {
     }
 
     @Override
-    public int compare(Book o1, Book o2) {
-        return o1.id - o2.id;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return id == book.id && price == book.price && Objects.equals(author, book.author) && Objects.equals(name, book.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, author, name, price);
     }
 }

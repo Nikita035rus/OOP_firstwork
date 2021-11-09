@@ -1,6 +1,6 @@
-package Interview.OOP;
+package Interview.oop;
 
-import Interview.OOP.Controller.Controller;
+import Interview.oop.controller.BookController;
 
 public class Test {
     public static void main(String[] args) {
@@ -8,7 +8,7 @@ public class Test {
         Book.library.put("Java8", new Book("Jon", "Java8", 10));
         Book.library.put("Java9", new Book("Jessica", "Java9", 200));
         Book.library.put("Java10", new Book("Steve", "Java9", 150));*/
-        Controller.start();
+        BookController.start();
     }
 }
 
