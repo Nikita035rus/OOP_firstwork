@@ -7,22 +7,16 @@ import Interview.oop.repository.BookRepository;
 import java.util.Scanner;
 
 public class BookController {
-    private static String request;
-    private static String arguments;
+    private String arguments;
+    private final BookService bookService = new BookService(new BookRepository());
 
     public BookController() {
-        request = new Scanner(System.in).nextLine();
-        getRequest(new BookService(new BookRepository()));
+        Scanner scn = new Scanner(System.in);
+        while (true){
+        getRequest(scn.nextLine());}
     }
 
-
-    public static void start() {
-        while (true) {
-            new BookController();
-        }
-    }
-
-    public void getRequest(BookService bookService) {
+    public void getRequest(String request) {
         String command;
 
         if (!request.contains("?")) {
@@ -36,61 +30,61 @@ public class BookController {
 
         switch (command) {
             case "find_book":
-                findBookByName(bookService);
+                findBookByName();
                 break;
             case "find_books":
-                findAllBooks(bookService);
+                findAllBooks();
                 break;
             case "find_books_price_between":
-                findBookWherePriceBetween(bookService);
+                findBookWherePriceBetween();
                 break;
             case "save_book":
-                saveBook(bookService);
+                saveBook();
                 break;
             case "update_book":
-                updateBookByID(bookService);
+                updateBookByID();
                 break;
             case "delete_book":
-                deleteBookByName(bookService);
+                deleteBookByName();
                 break;
             case "delete_all":
-                deleteAll(bookService);
+                deleteAll();
                 break;
             default:
                 throw new IncorrectRequest("IncorrectRequestException");
         }
     }
 
-    public void findBookByName(BookService bookService) {
+    public void findBookByName() {
         System.out.println(
-               bookService.findBookByName(arguments).orElseThrow(() ->
+                bookService.findBookByName(arguments).orElseThrow(() ->
                         new IncorrectRequest("TheBookIsEmptyException"))
         );
     }
 
-    public void findAllBooks(BookService bookService) {
+    public void findAllBooks() {
         bookService.findAllBooks()
                 .forEach(System.out::println);
     }
 
-    public void findBookWherePriceBetween(BookService bookService) {
+    public void findBookWherePriceBetween() {
         bookService.findBookWherePriceBetween(arguments)
                 .forEach(System.out::println);
     }
 
-    public void saveBook(BookService bookService) {
+    public void saveBook() {
         System.out.println(bookService.saveBook(arguments));
     }
 
-    public void updateBookByID(BookService bookService) {
+    public void updateBookByID() {
         System.out.println(bookService.updateBookByID(arguments));
     }
 
-    public void deleteBookByName(BookService bookService) {
+    public void deleteBookByName() {
         bookService.deleteBookByName(arguments);
     }
 
-    public void deleteAll(BookService bookService) {
-         bookService.deleteAll();
+    public void deleteAll() {
+        bookService.deleteAll();
     }
 }

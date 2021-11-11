@@ -5,7 +5,7 @@ import Interview.oop.controller.BookController;
 public class Test {
     public static void main(String[] args) {
 
-        BookController.start();
+        new BookController();
     }
 }
 
